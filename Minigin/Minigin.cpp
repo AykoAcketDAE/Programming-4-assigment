@@ -4,13 +4,17 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <thread>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "Timer.h"
 
 SDL_Window* g_window{};
+
+
 
 void PrintSDLVersion()
 {
@@ -61,7 +65,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
-
+	
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
@@ -87,8 +91,22 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	bool doContinue = true;
 	while (doContinue)
 	{
-		doContinue = input.ProcessInput();
-		sceneManager.Update();
-		renderer.Render();
+		auto tempTime = std::chrono::high_resolution_clock::now();
+		
+			doContinue = input.ProcessInput();
+			sceneManager.Update();
+			renderer.Render();
+			
+		auto lag = std::chrono::high_resolution_clock::now() - tempTime;
+
+		if (lag.count() <= 16000000)
+		{
+			auto times = 16000000 - lag.count();
+			std::this_thread::sleep_for(std::chrono::nanoseconds(times));
+		}
+		auto passedtime = std::chrono::high_resolution_clock::now() - tempTime;
+		Timer::GetInstance().SetDeltaTime(static_cast<float>(passedtime.count()));
 	}
 }
+
+
