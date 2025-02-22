@@ -78,6 +78,11 @@ namespace dae
 			return false;
 		}
 
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+		bool IsChild(const GameObject* parent);
+
 		GameObject() = default;
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -85,11 +90,23 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		const glm::vec3 GetWorldPosition() const { return m_WorldPosition; }
+		void SetLocalPosition(const glm::vec3& pos);
+		void UpdateWorldPosition();
+		void SetPositionDirty() { m_PositionIsDirty = true; };
+
 	private:
-		Transform m_transform{};
+		Transform m_Transform{};
 
 		bool m_IsRendering{ false };
 
 		std::vector<std::unique_ptr<Component>> m_ComponentPtrList{};
+
+		GameObject* m_Parent{nullptr};
+		std::vector<GameObject*> m_Children{};
+
+		glm::vec3 m_WorldPosition{};
+		glm::vec3 m_LocalPosition{};
+		bool m_PositionIsDirty{ false };
 	};
 }

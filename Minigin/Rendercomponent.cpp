@@ -2,15 +2,15 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-dae::Rendercomponent::Rendercomponent(const std::string& fullPath,float x,float y)
-	:m_Path{fullPath},xPos{x},yPos{y}
+dae::Rendercomponent::Rendercomponent(const std::string& fullPath)
+	:m_Path{fullPath}
 {
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(fullPath);
 }
 
 void dae::Rendercomponent::Render() const
 {
-	dae::Renderer::GetInstance().RenderTexture(*m_Texture, xPos, yPos);
+	dae::Renderer::GetInstance().RenderTexture(*m_Texture,m_Owner->GetWorldPosition().x, m_Owner->GetWorldPosition().y);
 }
 
 void dae::Rendercomponent::SetTexture(const std::string& fullPath)

@@ -8,7 +8,7 @@ namespace dae
 	class Rendercomponent final :public Component
 	{
 	public:
-		Rendercomponent(const std::string& fullPath,float x,float y);
+		Rendercomponent(const std::string& fullPath);
 
 		void Update() {};
 		void Render()const;
