@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
+#include "ThrashTheCache.h"
 
 namespace dae
 {
@@ -13,9 +14,10 @@ namespace dae
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};	
+		ThrashTheCache m_thrashTheCache{};
 	public:
 		void Init(SDL_Window* window);
-		void Render() const;
+		void Render();
 		void Destroy();
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;

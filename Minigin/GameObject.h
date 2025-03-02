@@ -25,7 +25,8 @@ namespace dae
 			static_assert(std::is_base_of<Component, Comp>::value, "ComponentType must be derived from Component");
 
 			auto component = std::make_unique<Comp>(std::forward<Args>(args)...);
-			component->m_Owner = this;  
+			component->m_Owner = this;
+			
 			m_ComponentPtrList.push_back(std::move(component));
 		};
 
@@ -79,6 +80,7 @@ namespace dae
 		}
 
 		void SetParent(GameObject* parent, bool keepWorldPosition);
+		GameObject* GetParent() const { return m_Parent; };
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
 		bool IsChild(const GameObject* parent);
@@ -95,6 +97,7 @@ namespace dae
 		void UpdateWorldPosition();
 		void SetPositionDirty() { m_PositionIsDirty = true; };
 
+		
 	private:
 		Transform m_Transform{};
 

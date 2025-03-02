@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Timer.h"
+#include "ThrashTheCache.h"
 
 SDL_Window* g_window{};
 
@@ -57,8 +58,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		700,
-		700,
+		640,
+		480,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
@@ -86,7 +87,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
-
+	ThrashTheCache thrashTheCache{};
 	// todo: this update loop could use some work.
 	bool doContinue = true;
 	while (doContinue)
@@ -96,7 +97,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 			renderer.Render();
-			
 		auto lag = std::chrono::high_resolution_clock::now() - tempTime;
 
 		if (lag.count() <= 16000000)
@@ -105,7 +105,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			std::this_thread::sleep_for(std::chrono::nanoseconds(times));
 		}
 		auto passedtime = std::chrono::high_resolution_clock::now() - tempTime;
-		Timer::GetInstance().SetDeltaTime(static_cast<float>(passedtime.count()));
+		Timer::GetInstance().SetDeltaTime(static_cast<double>(passedtime.count()));
 	}
 }
 

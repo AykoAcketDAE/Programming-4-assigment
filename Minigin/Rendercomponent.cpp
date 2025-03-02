@@ -10,7 +10,7 @@ dae::Rendercomponent::Rendercomponent(const std::string& fullPath)
 
 void dae::Rendercomponent::Render() const
 {
-	dae::Renderer::GetInstance().RenderTexture(*m_Texture,m_Owner->GetWorldPosition().x, m_Owner->GetWorldPosition().y);
+	dae::Renderer::GetInstance().RenderTexture(*m_Texture, GetOwner()->GetWorldPosition().x, GetOwner()->GetWorldPosition().y);
 }
 
 void dae::Rendercomponent::SetTexture(const std::string& fullPath)

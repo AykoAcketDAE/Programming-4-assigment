@@ -17,7 +17,7 @@ namespace dae
 		FPSComponent& operator=(FPSComponent&& other) = delete;
 		void Update() override;
 		void Render() const override {};
-		float m_Fps{};
+		double m_Fps{};
 
 	private:
 		TextComponent* m_TextPtr{ nullptr };

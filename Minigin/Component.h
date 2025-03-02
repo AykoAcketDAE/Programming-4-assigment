@@ -18,10 +18,13 @@ namespace dae
 		virtual void Update() = 0;
 		virtual void Render() const = 0;
 	protected:
-		GameObject* m_Owner{};
-		Component() = default;
-	private:
+		Component() {};
+		GameObject* GetOwner() const { return m_Owner; };
 		
+		
+	private:
+
+		GameObject* m_Owner{nullptr};
 		friend class GameObject;
 		
 	};

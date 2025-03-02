@@ -10,7 +10,6 @@ namespace dae
 		void SetPosition(float x, float y, float z);
 		void SetPosition(const glm::vec3& position);
 		
-
 	private:
 		glm::vec3 m_position;
 	};

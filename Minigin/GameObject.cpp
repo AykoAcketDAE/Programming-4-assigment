@@ -22,15 +22,19 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 
 void dae::GameObject::AddChild(GameObject* child)
 {
+	if (!child) return;
+	child->SetPositionDirty();
+	child->SetParent(this, true);
 	m_Children.push_back(child);
 	child->UpdateWorldPosition();
 }
 
 void dae::GameObject::RemoveChild(GameObject* child)
 {
-	if (!child) return;
-	std::erase(m_Children, child);
-
+	if (!child ) return;						
+	child->SetParent(nullptr, true);
+	auto it = std::find(m_Children.begin(), m_Children.end(), child);	
+	m_Children.erase(it);
 }
 
 bool dae::GameObject::IsChild(const GameObject* parent)
@@ -56,6 +60,7 @@ void dae::GameObject::UpdateWorldPosition()
 			m_WorldPosition = m_LocalPosition;
 		else
 			m_WorldPosition = m_Parent->GetWorldPosition() + m_LocalPosition;
+	
 	}
 	m_PositionIsDirty = false;
 }
